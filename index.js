@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -22,7 +23,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({storage : fileStorage}).single('file'));
 
 app.get('/', (req, res, next) => {
-    res.render('index')
+    fs.readdir(path.join(__dirname, './public/uploads'), function (err, files) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        res.render('index', {
+            files: files
+        })
+    });
 })
 
 app.post('/upload', (req, res, next) => {

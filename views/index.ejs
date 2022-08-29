@@ -123,7 +123,9 @@
 
 <div class="table-container hero-body">
    <table class="container table  is-bordered" cellspacing="0" cellpadding="0">
-      <h2 class="notification" align="center">No files uploaded</h2>');
+      <% if(files.length < 1) { %>
+      <h2 class="notification" align="center">No files uploaded</h2>
+      <% } else { %>
       <thead>
         <tr class="is-selected">
         <th><h1>File</h1></th>
@@ -133,12 +135,13 @@
         </tr>
       </thead>
        <tbody>
+        <% for(let file of files ){ %>
            <tr>
               <!-- Displaying file name !-->
               <!-- href should be complete file path !-->
               <!-- download attribute should be the name after it downloads !-->
               <td><a href="uploads/<?php echo $files[$a]; ?>" download="<?php echo $files[$a]; ?>">
-                  <%=  %>
+                  <%= file %>
               </a></td>
               <td><a href="AES-enc.php?name=uploads/<?php echo $files[$a] ?>" style="color: green;">
                     Encrypt
@@ -153,8 +156,9 @@
                   </a>
               </td>
             </tr>
+          <% } %>
        </tbody>
-
+       <% } %>
 </table>
 </div>
 </section>
