@@ -140,18 +140,18 @@
               <!-- Displaying file name !-->
               <!-- href should be complete file path !-->
               <!-- download attribute should be the name after it downloads !-->
-              <td><a href="uploads/<?php echo $files[$a]; ?>" download="<?php echo $files[$a]; ?>">
+              <td><a href="uploads/<%= file %>" download="<%= file %>">
                   <%= file %>
               </a></td>
-              <td><a href="AES-enc.php?name=uploads/<?php echo $files[$a] ?>" style="color: green;">
+              <td><a href="<%=  %>" style="color: green;">
                     Encrypt
                   </a>
               </td>
-              <td><a href="AES-dec.php?name=uploads/<?php echo $files[$a]; ?>" style="color: black;">
+              <td><a href="<%=  %>" style="color: black;">
                    Decrypt
                    </a>
               </td>
-              <td><a href="delete.php?name=uploads/<?php echo $files[$a]; ?>" style="color: red;">
+              <td><a href="<%=  %>" style="color: red;">
                   Delete
                   </a>
               </td>
