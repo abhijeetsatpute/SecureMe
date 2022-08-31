@@ -143,16 +143,34 @@
               <td><a href="uploads/<%= file %>" download="<%= file %>">
                   <%= file %>
               </a></td>
-              <td><a href="/enc/<%=file %>" style="color: green;">
-                    Encrypt
+              <td><a style="color: green;">
+                    
+                    <form method="post" action="/enc" class="inline">
+                      <input type="hidden" name="fileName" value="<%= file %>">
+                      <input id="encPwd" type="hidden" name="encPwd" value="">
+                      <button type="submit" name="submit_param" value="submit_value" onclick="checkFile('<%= file %>', 'encrypt')" class="link-button">
+                        Encrypt
+                      </button>
+                    </form>
                   </a>
               </td>
-              <td><a href="/dec/<%=file %>" style="color: black;">
-                   Decrypt
+              <td><a style="color: black;">
+                    <form method="post" action="/dec" class="inline">
+                      <input type="hidden" name="fileName" value="<%= file %>">
+                      <input id="decPwd" type="hidden" name="decPwd" value="">
+                      <button type="submit" name="submit_param" value="submit_value" onclick="checkFile('<%= file %>', 'decrypt')" class="link-button">
+                        Decrypt
+                      </button>
+                    </form>
                    </a>
               </td>
-              <td><a href="/del/<%=file %>" style="color: red;">
-                  Delete
+              <td><a style="color: red;">
+                  <form method="post" action="/del" class="inline">
+                    <input type="hidden" name="fileName" value="<%= file %>">
+                    <button type="submit" name="submit_param" value="submit_value" onclick="checkFile('<%= file %>', 'delete')" class="link-button">
+                      Delete
+                    </button>
+                  </form>
                   </a>
               </td>
             </tr>
@@ -192,6 +210,18 @@
 		})
 	  }
 	})
+
+  function checkFile(fileName ,action){
+    // if file is encrypted show alert(fileName) already encrypted
+    // if file is decrypted show alert(fileName) already decrypted
+    if(action == 'delete') {
+      alert('File deleted');
+    } else if (action == 'encrypt') {
+      document.getElementById("encPwd").value = prompt('Enter the password to encrypt');
+    } else if (action == 'decrypt') {
+      document.getElementById("decPwd").value = prompt('Enter the password to decrypt');
+    }
+  }
 </script>
 
 </html>
