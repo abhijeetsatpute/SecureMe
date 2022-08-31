@@ -1,6 +1,3 @@
-const path = require('path');
-const fs = require('fs');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
@@ -26,10 +23,10 @@ app.use(express.static(path.join(__dirname, './public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({storage : fileStorage}).single('file'));
 
-// app.use(fileOpRoutes);
+app.use(fileOpRoutes);
 app.use(homeRoutes);
 app.use(uploadRoutes);
 
-app.listen(80, ()=> {
-    console.log('✨ App is listening on port 80');
+app.listen(process.env.PORT || 80, ()=> {
+    console.log('✨ App is listening on port 80', this.address().port);
 });
