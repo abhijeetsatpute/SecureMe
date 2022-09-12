@@ -44,7 +44,7 @@
       <div class="container">
         <div class="navbar-brand">
           <a href="index.php" class="navbar-item">
-            <img src="logo2.png" alt="Logo">
+            <img src="/logo2.png" alt="Logo">
           </a>
           <span class="navbar-burger burger" data-target="navbarMenuHeroC">
             <span></span>
@@ -92,7 +92,7 @@
 
 <section class="hero">
   <div class="container hero-body">
-	     <form class="container" method="POST" action="upload.php" enctype="multipart/form-data">
+	     <form class="container" method="POST" action="/upload" enctype="multipart/form-data">
 			      <div class="field">
 				          <div class=" file has-name">
 				                <label class="file-label">
@@ -123,14 +123,9 @@
 
 <div class="table-container hero-body">
    <table class="container table  is-bordered" cellspacing="0" cellpadding="0">
-     <?php
-     // This will return all files in that folder
-     $files = scandir("uploads");
-
-     if (!isset($files[2])) {
-      print('<h2 class="notification" align="center">No files uploaded</h2>');
-     }
-      ?>
+      <% if(files.length < 1) { %>
+      <h2 class="notification" align="center">No files uploaded</h2>
+      <% } else { %>
       <thead>
         <tr class="is-selected">
         <th><h1>File</h1></th>
@@ -139,44 +134,49 @@
         <th><h1>Delete</h1></th>
         </tr>
       </thead>
-      <?php
-
-
-      // If you are using windows, first 2 indexes are "." and "..",
-      // if you are using Mac, you may need to start the loop from 3,
-      // because the 3rd index in Mac is ".DS_Store" (auto-generated file by Mac)
-
-      for ($a = 2; $a < count($files); $a++)
-      {
-      ?>
-
        <tbody>
+        <% for(let file of files ){ %>
            <tr>
               <!-- Displaying file name !-->
               <!-- href should be complete file path !-->
               <!-- download attribute should be the name after it downloads !-->
-              <td><a href="uploads/<?php echo $files[$a]; ?>" download="<?php echo $files[$a]; ?>">
-                  <?php  echo $files[$a]; ?>
+              <td><a href="uploads/<%= file %>" download="<%= file %>">
+                  <%= file %>
               </a></td>
-              <td><a href="AES-enc.php?name=uploads/<?php echo $files[$a] ?>" style="color: green;">
-                    Encrypt
+              <td><a style="color: green;">
+                    
+                    <form method="post" action="/enc" class="inline">
+                      <input type="hidden" name="fileName" value="<%= file %>">
+                      <input id="encPwd" type="hidden" name="encPwd" value="">
+                      <button type="submit" name="submit_param" value="submit_value" onclick="checkFile('<%= file %>', 'encrypt')" class="link-button">
+                        Encrypt
+                      </button>
+                    </form>
                   </a>
               </td>
-              <td><a href="AES-dec.php?name=uploads/<?php echo $files[$a]; ?>" style="color: black;">
-                   Decrypt
+              <td><a style="color: black;">
+                    <form method="post" action="/dec" class="inline">
+                      <input type="hidden" name="fileName" value="<%= file %>">
+                      <input id="decPwd" type="hidden" name="decPwd" value="">
+                      <button type="submit" name="submit_param" value="submit_value" onclick="checkFile('<%= file %>', 'decrypt')" class="link-button">
+                        Decrypt
+                      </button>
+                    </form>
                    </a>
               </td>
-              <td><a href="delete.php?name=uploads/<?php echo $files[$a]; ?>" style="color: red;">
-                  Delete
+              <td><a style="color: red;">
+                  <form method="post" action="/del" class="inline">
+                    <input type="hidden" name="fileName" value="<%= file %>">
+                    <button type="submit" name="submit_param" value="submit_value" onclick="checkFile('<%= file %>', 'delete')" class="link-button">
+                      Delete
+                    </button>
+                  </form>
                   </a>
               </td>
             </tr>
+          <% } %>
        </tbody>
-
-
-<?php
-}
-?>
+       <% } %>
 </table>
 </div>
 </section>
@@ -210,6 +210,18 @@
 		})
 	  }
 	})
+
+  function checkFile(fileName ,action){
+    // if file is encrypted show alert(fileName) already encrypted
+    // if file is decrypted show alert(fileName) already decrypted
+    if(action == 'delete') {
+      alert('File deleted');
+    } else if (action == 'encrypt') {
+      document.getElementById("encPwd").value = prompt('Enter the password to encrypt');
+    } else if (action == 'decrypt') {
+      document.getElementById("decPwd").value = prompt('Enter the password to decrypt');
+    }
+  }
 </script>
 
 </html>
