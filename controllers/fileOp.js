@@ -30,15 +30,19 @@ exports.getDec = async(req, res, next) => {
     const fileName = req.body.fileName;
     const decPwd = req.body.decPwd;
     const FilePath = path.join('./public', `./uploads/${fileName}`);
-    const storePath = path.join('./public', `./uploads/${fileName.replace('-enc','')}-dec.pdf`);
+    const baseName = fileName.replace('-enc', '');
+    const ext = path.extname(baseName);
+    const nameWithoutExt = path.basename(baseName, ext);
+    const storePath = path.join('./public', `./uploads/${nameWithoutExt}-dec${ext}`);
     try {
         const fc = new FileCrypt(decPwd);
-        let result = await fc.decrypt(FilePath, storePath);
+        await fc.decrypt(FilePath, storePath);
         console.log("decrypt ok");
         deleteFile(FilePath);
-      } catch (e) {
-        console.log(e);
-      }
+    } catch (e) {
+        console.log('Decrypt error:', e.message || e);
+        return res.redirect('/?error=Incorrect+password+or+corrupted+file');
+    }
     res.redirect('/');
 }
 

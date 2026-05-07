@@ -8,7 +8,8 @@ exports.getHome = (req, res, next) => {
             return console.log('Unable to scan directory: ' + err);
         } 
         res.render('index', {
-            files: files
+            files: files,
+            error: req.query.error || null
         })
     });
 }
